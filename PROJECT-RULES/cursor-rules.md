@@ -6,32 +6,56 @@ The Senior Code Review prompt catches bugs in code that's already written. These
 
 ---
 
-## How to use
+## How to use — different tools, different deployment
 
-### Cursor
+Different AI coding tools handle persistent context differently. **For Claude Code specifically, the deployment is split between two channels.** Use the table below to pick the right setup for your tool.
 
-Save the **Rules** section below as `.cursorrules` at your project root. Cursor automatically loads it as context for every conversation in that project.
+| Tool | Proactive rules (always-on) | Code review (on-demand) |
+|---|---|---|
+| **Cursor** | Full **Rules** below → `.cursorrules` | Paste `PROMPTS/01-senior-code-review.md` into chat |
+| **Claude Code** | **Terse essentials** → `CLAUDE.md` (see [`claude-md-essentials.md`](./claude-md-essentials.md)) | **Slash command** → `~/.claude/commands/code-review.md` (see [`CLAUDE-COMMANDS/`](../CLAUDE-COMMANDS/)) |
+| **ChatGPT** (custom GPT) | Full **Rules** below → custom GPT instructions field | Paste `PROMPTS/01-senior-code-review.md` into chat |
+| **Generic LLM** | Full **Rules** below as system prompt | Paste `PROMPTS/01-senior-code-review.md` into chat |
+
+### ⚠️ Important: don't put the review prompt in CLAUDE.md
+
+A common mistake is pasting the full Senior Code Review prompt into CLAUDE.md so it's "always available." This is wrong. Two reasons:
+
+1. **Wasted token budget every conversation.** The review prompt is ~5KB of structured rules. Loading it on every "write me a function" is wasteful.
+2. **Subtle bias toward review-mode thinking.** When the model has review categories in context, it can't help reading them. That can warp how it writes code (over-explaining, defensively over-caveating, treating every coding task like an audit).
+
+**Code review is an action, not persistent context.** Use a slash command for it. The slash command at [`CLAUDE-COMMANDS/code-review.md`](../CLAUDE-COMMANDS/code-review.md) is purpose-built for this — and it actually goes further than paste-into-chat by using Claude Code's Read and Grep tools to do real cross-file investigation.
+
+### Cursor (single-context tool)
+
+Save the **Rules** section below as `.cursorrules` at your project root. Cursor automatically loads it as context for every conversation in that project. Cursor doesn't natively distinguish "rules" from "review actions" the way Claude Code does, so the full rules block is the right deployment.
 
 ```bash
-# From your project root
 cp /path/to/this/file ./.cursorrules-source
 # Then copy just the "Rules" section content into ./.cursorrules
 ```
 
-### Claude Code
+For code review in Cursor, paste `PROMPTS/01-senior-code-review.md` into the chat panel.
 
-Save the **Rules** section as `CLAUDE.md` at your project root. Claude Code loads it automatically.
+### Claude Code (split deployment — recommended)
+
+Two files, two purposes:
+
+1. **For persistent rules** (loaded every conversation): use the **terse essentials** at [`claude-md-essentials.md`](./claude-md-essentials.md). Save its Rules section as `CLAUDE.md` at your project root. ~50 lines, focused on the highest-value coding guardrails.
+
+2. **For on-demand review** (invoked when you want it): use the slash command at [`CLAUDE-COMMANDS/code-review.md`](../CLAUDE-COMMANDS/code-review.md). Save it as `.claude/commands/code-review.md` in your project (or `~/.claude/commands/code-review.md` for user-scoped). Then type `/code-review src/foo.ts` to invoke. The slash command uses Claude Code's tool access to do cross-file investigation that a single-pass review can't.
 
 ### ChatGPT (custom GPT or project)
 
-Paste the **Rules** section into:
+Paste the **Rules** section below into:
 - The custom GPT's "instructions" field, or
-- The "instructions" field of a ChatGPT Project, or
-- The first message of a chat (less ideal — context can drift over long sessions)
+- The "instructions" field of a ChatGPT Project
+
+For review, open a fresh chat and paste `PROMPTS/01-senior-code-review.md`. ChatGPT doesn't have slash commands for tool-using actions, so review stays in paste-into-chat mode.
 
 ### Generic LLM tools
 
-Use the **Rules** section as the system prompt or the first message in any session where you want the AI to write Node.js / NestJS backend code following this methodology.
+Use the **Rules** section as the system prompt or the first message in any session where you want the AI to write Node.js / NestJS backend code following this methodology. For review, paste `PROMPTS/01-senior-code-review.md` separately.
 
 ---
 

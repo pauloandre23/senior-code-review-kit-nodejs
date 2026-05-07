@@ -29,7 +29,8 @@ Real senior code review is **calibrated, structured, and refuses to refactor bef
 2. **A real annotated example** — a synthetic NestJS service with 13 production patterns embedded, plus an answer key, plus the workflow for testing the prompt yourself
 3. **Honest validation evidence** — 7-axis scoring across 4 prompt iterations and multiple cross-run validations. Includes the systematic misses (no fake "100% catch" claims)
 4. **Cursor / Claude Code / ChatGPT project rules** — the same methodology repackaged as proactive project rules so the AI follows it while writing code, not just reviewing it
-5. **Methodology doc** — design rationale, why each rule exists, lessons from real-code validation across 4 prompt iterations
+5. **A Claude Code slash command** that uses Read + Grep tools for cross-file investigation — closes some of v1.0's documented persistent-miss gaps (dead code via grep, cache atomicity via read, etc.)
+6. **Methodology doc** — design rationale, why each rule exists, lessons from real-code validation across 4 prompt iterations
 
 ## What makes this different from other prompt packs
 
@@ -64,6 +65,21 @@ File: path/to/your/file.ts
 
 For full usage instructions, see [PROMPTS/01-senior-code-review.md](./PROMPTS/01-senior-code-review.md).
 
+### Claude Code users — there's a better path
+
+If you use Claude Code, install the slash command instead of pasting:
+
+```bash
+mkdir -p .claude/commands
+cp /path/to/this-kit/CLAUDE-COMMANDS/code-review.md .claude/commands/code-review.md
+```
+
+Then from anywhere in Claude Code: `/code-review src/path/to/file.ts`
+
+The slash command uses Claude Code's Read and Grep tools to do real cross-file investigation — verifying dead code via grep, checking cache layer atomicity by reading the cache file, etc. **It catches several patterns the paste-into-chat version persistently misses.**
+
+For setup details and what's different, see [CLAUDE-COMMANDS/README.md](./CLAUDE-COMMANDS/README.md).
+
 ## Repository structure
 
 ```
@@ -71,7 +87,10 @@ ai-code-review-kit-nodejs/
 ├── README.md                           (you are here)
 ├── LICENSE                             MIT
 ├── PROMPTS/
-│   └── 01-senior-code-review.md        v2.2.1 prompt + how-to-use wrapper
+│   └── 01-senior-code-review.md        v2.2.1 prompt + how-to-use wrapper (paste into ChatGPT / Claude.ai / Cursor chat)
+├── CLAUDE-COMMANDS/
+│   ├── README.md                       install instructions for the slash command
+│   └── code-review.md                  Claude Code slash command — uses Read + Grep tools
 ├── EXAMPLES/
 │   └── 01-real-nestjs-service-review/
 │       ├── README.md                   orientation for the example
@@ -79,7 +98,8 @@ ai-code-review-kit-nodejs/
 │       ├── what-to-expect.md           annotated answer key
 │       └── validation-evidence.md      7-axis scoring + cross-run validation
 ├── PROJECT-RULES/
-│   └── cursor-rules.md                 proactive rules for Cursor / Claude Code / ChatGPT
+│   ├── cursor-rules.md                 proactive rules + per-tool deployment guide
+│   └── claude-md-essentials.md         terse rules sized for Claude Code's CLAUDE.md
 └── METHODOLOGY/
     └── why-this-works.md               design rationale + iteration history + LLM ceiling argument
 ```

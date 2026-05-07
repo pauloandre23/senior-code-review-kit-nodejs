@@ -13,7 +13,7 @@ The Senior Code Review prompt was run against a real production NestJS service â
 - ~395 lines of TypeScript
 - Mixes orchestration, batch processing, external API calls, cache I/O
 - Has the same architectural shape as `synthetic-input-code.ts` in this folder
-- Has all 13 patterns embedded that the synthetic file demonstrates
+- Has the same production patterns the synthetic file demonstrates
 
 The real production file cannot be published. The synthetic equivalent in this folder mirrors its structure and pattern density.
 

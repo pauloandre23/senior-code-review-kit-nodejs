@@ -75,7 +75,7 @@ ai-code-review-kit-nodejs/
 ├── EXAMPLES/
 │   └── 01-real-nestjs-service-review/
 │       ├── README.md                   orientation for the example
-│       ├── synthetic-input-code.ts     realistic NestJS service with 13 patterns
+│       ├── synthetic-input-code.ts     realistic NestJS service with production patterns embedded
 │       ├── what-to-expect.md           annotated answer key
 │       └── validation-evidence.md      7-axis scoring + cross-run validation
 ├── PROJECT-RULES/

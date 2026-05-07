@@ -8,7 +8,7 @@ This folder contains a realistic example of running the Senior Code Review promp
 
 | File | What it is |
 |---|---|
-| `synthetic-input-code.ts` | A realistic NestJS service (~330 lines) with **all 13 patterns** deliberately embedded. Sanitized; not real production code. |
+| `synthetic-input-code.ts` | A realistic NestJS service (~370 lines) with **production patterns deliberately embedded across all 7 review categories**. Sanitized; not real production code. |
 | `what-to-expect.md` | An annotated answer key. For each embedded pattern: where it is, what category it belongs to, what confidence a senior reviewer should assign. |
 | `validation-evidence.md` | Our 7-axis scoring of the prompt against **real production NestJS code** (kept private). Honest about wins, misses, and where the model has variance. |
 
@@ -36,7 +36,7 @@ You should see most patterns caught at the right confidence. Some may be missed 
 
 ## Why "synthetic" instead of real code
 
-The prompt was developed and validated against a real production NestJS service we cannot publish (proprietary). The `synthetic-input-code.ts` here is a public-shareable equivalent — a different domain (notification dispatch, not the original), but with **the same 13 patterns embedded at the same architectural shape**.
+The prompt was developed and validated against a real production NestJS service we cannot publish (proprietary). The `synthetic-input-code.ts` here is a public-shareable equivalent — a different domain (notification dispatch, not the original), but with **the same production patterns embedded at the same architectural shape**.
 
 This means:
 

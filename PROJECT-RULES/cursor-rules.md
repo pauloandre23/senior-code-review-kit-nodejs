@@ -13,7 +13,7 @@ Different AI coding tools handle persistent context differently. **For Claude Co
 | Tool | Proactive rules (always-on) | Code review (on-demand) |
 |---|---|---|
 | **Cursor** | Full **Rules** below → `.cursorrules` | Paste `PROMPTS/01-senior-code-review.md` into chat |
-| **Claude Code** | **Terse essentials** → `CLAUDE.md` (see [`claude-md-essentials.md`](./claude-md-essentials.md)) | **Slash command** → `~/.claude/commands/code-review.md` (see [`CLAUDE-COMMANDS/`](../CLAUDE-COMMANDS/)) |
+| **Claude Code** | **Terse essentials** → `CLAUDE.md` (see [`claude-md-essentials.md`](./claude-md-essentials.md)) | **Skill (recommended)** → `~/.claude/skills/code-review/SKILL.md` (see [`SKILLS/`](../SKILLS/)) — or slash command → `~/.claude/commands/code-review.md` (see [`CLAUDE-COMMANDS/`](../CLAUDE-COMMANDS/)) |
 | **ChatGPT** (custom GPT) | Full **Rules** below → custom GPT instructions field | Paste `PROMPTS/01-senior-code-review.md` into chat |
 | **Generic LLM** | Full **Rules** below as system prompt | Paste `PROMPTS/01-senior-code-review.md` into chat |
 
@@ -24,7 +24,7 @@ A common mistake is pasting the full Senior Code Review prompt into CLAUDE.md so
 1. **Wasted token budget every conversation.** The review prompt is ~5KB of structured rules. Loading it on every "write me a function" is wasteful.
 2. **Subtle bias toward review-mode thinking.** When the model has review categories in context, it can't help reading them. That can warp how it writes code (over-explaining, defensively over-caveating, treating every coding task like an audit).
 
-**Code review is an action, not persistent context.** Use a slash command for it. The slash command at [`CLAUDE-COMMANDS/code-review.md`](../CLAUDE-COMMANDS/code-review.md) is purpose-built for this — and it actually goes further than paste-into-chat by using Claude Code's Read and Grep tools to do real cross-file investigation.
+**Code review is an action, not persistent context.** Use a Skill or slash command for it. The Skill at [`SKILLS/code-review/SKILL.md`](../SKILLS/code-review/SKILL.md) (auto-activated, recommended) and the slash command at [`CLAUDE-COMMANDS/code-review.md`](../CLAUDE-COMMANDS/code-review.md) (explicit invocation) are purpose-built for this — both go further than paste-into-chat by using Claude Code's Read and Grep tools to do real cross-file investigation.
 
 ### Cursor (single-context tool)
 
@@ -43,7 +43,9 @@ Two files, two purposes:
 
 1. **For persistent rules** (loaded every conversation): use the **terse essentials** at [`claude-md-essentials.md`](./claude-md-essentials.md). Save its Rules section as `CLAUDE.md` at your project root. ~50 lines, focused on the highest-value coding guardrails.
 
-2. **For on-demand review** (invoked when you want it): use the slash command at [`CLAUDE-COMMANDS/code-review.md`](../CLAUDE-COMMANDS/code-review.md). Save it as `.claude/commands/code-review.md` in your project (or `~/.claude/commands/code-review.md` for user-scoped). Then type `/code-review src/foo.ts` to invoke. The slash command uses Claude Code's tool access to do cross-file investigation that a single-pass review can't.
+2. **For on-demand review** (invoked when you want it): use the **Skill** at [`SKILLS/code-review/SKILL.md`](../SKILLS/code-review/SKILL.md). Save it as `.claude/skills/code-review/SKILL.md` in your project (or `~/.claude/skills/code-review/SKILL.md` for user-scoped). Then ask naturally: `review src/foo.ts`. The Skill auto-activates from your description and uses Claude Code's Read + Grep tools to do cross-file investigation that a single-pass review can't.
+
+   Prefer explicit invocation? A slash command version (`/code-review src/foo.ts`) is also available — see [`CLAUDE-COMMANDS/`](../CLAUDE-COMMANDS/). Same content, same tool scoping, different invocation ergonomics.
 
 ### ChatGPT (custom GPT or project)
 
@@ -51,7 +53,7 @@ Paste the **Rules** section below into:
 - The custom GPT's "instructions" field, or
 - The "instructions" field of a ChatGPT Project
 
-For review, open a fresh chat and paste `PROMPTS/01-senior-code-review.md`. ChatGPT doesn't have slash commands for tool-using actions, so review stays in paste-into-chat mode.
+For review, open a fresh chat and paste `PROMPTS/01-senior-code-review.md`. ChatGPT doesn't have Skills or slash commands for tool-using actions, so review stays in paste-into-chat mode.
 
 ### Generic LLM tools
 

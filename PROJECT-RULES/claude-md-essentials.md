@@ -12,7 +12,7 @@ This terse version keeps only the **highest-leverage rules** — the ones that p
 
 Save the **Rules** section below as `CLAUDE.md` at your project root. Claude Code loads it automatically as persistent context.
 
-For **on-demand code review** (the heavyweight methodology), use the slash command in [`CLAUDE-COMMANDS/code-review.md`](../CLAUDE-COMMANDS/code-review.md) instead. That's the right place for review — actions invoked on demand, not persistent context.
+For **on-demand code review** (the heavyweight methodology), install the Skill in [`SKILLS/code-review/SKILL.md`](../SKILLS/code-review/SKILL.md) (auto-activated, recommended) or the slash command in [`CLAUDE-COMMANDS/code-review.md`](../CLAUDE-COMMANDS/code-review.md) (explicit-invoke). Either is the right place for review — actions invoked on demand, not persistent context.
 
 ---
 
@@ -98,7 +98,7 @@ Those live in [`cursor-rules.md`](./cursor-rules.md) for tools where the rules a
 | Daily Claude Code coding | This terse version → CLAUDE.md |
 | Daily Cursor coding | Full version (`cursor-rules.md`) → `.cursorrules` |
 | Daily ChatGPT coding via custom GPT | Full version → custom GPT instructions field |
-| **On-demand code review in Claude Code** | Slash command (`CLAUDE-COMMANDS/code-review.md`) — NOT in CLAUDE.md |
+| **On-demand code review in Claude Code** | Skill (`SKILLS/code-review/SKILL.md`, recommended) or slash command (`CLAUDE-COMMANDS/code-review.md`) — NOT in CLAUDE.md |
 | **On-demand code review elsewhere** | Paste prompt (`PROMPTS/01-senior-code-review.md`) into a fresh chat |
 
 The principle: **persistent context vs on-demand action** is a real architectural choice. Use each channel for what it's best at.

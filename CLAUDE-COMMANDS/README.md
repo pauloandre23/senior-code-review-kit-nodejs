@@ -1,6 +1,11 @@
-# Slash Command for Claude Code
+# Slash Command for Claude Code (explicit-invoke alternative)
 
-A drop-in slash command version of the Senior Code Review prompt for Claude Code. Unlike the paste-into-chat version, this one **uses Claude Code's file-reading and grep tools** to do real cross-file investigation.
+A drop-in slash command version of the Senior Code Review prompt for Claude Code. Like the [Skill](../SKILLS/) version, this one uses Claude Code's Read and Grep tools to do real cross-file investigation. The difference is invocation:
+
+- **Skill** ([`SKILLS/`](../SKILLS/)) — auto-activates when you describe a review request naturally (`review src/foo.ts`). **Recommended default.**
+- **Slash command** *(this folder)* — explicit invocation (`/code-review src/foo.ts`). Use this when you want guaranteed, deterministic activation of the review methodology with no chance of Claude Code interpreting your request as something else.
+
+Both ship the same review methodology and use the same Read + Grep tool scoping. Pick the form that matches your workflow.
 
 ---
 
@@ -87,10 +92,10 @@ The slash command isn't perfect — it's still constrained by Claude Code's reas
 
 ## Why this matters strategically
 
-The split between this slash command and the proactive `PROJECT-RULES/cursor-rules.md` reflects a real LLM-product principle:
+The split between this slash command, the [Skill](../SKILLS/), and the proactive `PROJECT-RULES/cursor-rules.md` reflects a real LLM-product principle:
 
 - **Persistent context** (CLAUDE.md, .cursorrules) is for things that should always apply — coding standards, project architecture, conventions
-- **On-demand actions** (slash commands, skills) are for things invoked when needed — code review, refactor planning, debugging
+- **On-demand actions** (Skills, slash commands) are for things invoked when needed — code review, refactor planning, debugging
 
 Mixing them — putting the review prompt in CLAUDE.md — wastes context budget and biases the model toward review-mode thinking even when writing code.
 
@@ -100,6 +105,7 @@ The same principle shows up across agentic tools: system prompt vs user prompt, 
 
 ## Reading next
 
+- The Skill version (recommended Claude Code path): [`SKILLS/`](../SKILLS/) — auto-activated, no `/command` needed
 - The base prompt: [`PROMPTS/01-senior-code-review.md`](../PROMPTS/01-senior-code-review.md) — for ChatGPT, Claude.ai, Cursor's chat
 - The proactive rules: [`PROJECT-RULES/cursor-rules.md`](../PROJECT-RULES/cursor-rules.md) — for CLAUDE.md, .cursorrules, ChatGPT custom GPT instructions
 - The methodology: [`METHODOLOGY/why-this-works.md`](../METHODOLOGY/why-this-works.md)

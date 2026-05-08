@@ -29,7 +29,7 @@ Real senior code review is **calibrated, structured, and refuses to refactor bef
 2. **A real annotated example** — a synthetic NestJS service with 13 production patterns embedded, plus an answer key, plus the workflow for testing the prompt yourself
 3. **Honest validation evidence** — 7-axis scoring across 4 prompt iterations and multiple cross-run validations. Includes the systematic misses (no fake "100% catch" claims)
 4. **Cursor / Claude Code / ChatGPT project rules** — the same methodology repackaged as proactive project rules so the AI follows it while writing code, not just reviewing it
-5. **A Claude Code slash command** that uses Read + Grep tools for cross-file investigation — closes some of v1.0's documented persistent-miss gaps (dead code via grep, cache atomicity via read, etc.)
+5. **A Claude Code Skill** (auto-activated) and **slash command** (explicit) — both use Read + Grep tools for cross-file investigation, closing some of v1.0's documented persistent-miss gaps (dead code via grep, cache atomicity via read, etc.)
 6. **Methodology doc** — design rationale, why each rule exists, lessons from real-code validation across 4 prompt iterations
 
 ## What makes this different from other prompt packs
@@ -67,18 +67,20 @@ For full usage instructions, see [PROMPTS/01-senior-code-review.md](./PROMPTS/01
 
 ### Claude Code users — there's a better path
 
-If you use Claude Code, install the slash command instead of pasting:
+If you use Claude Code, install the **Skill** instead of pasting. A Skill auto-activates when you ask for a review naturally — no `/command` needed.
 
 ```bash
-mkdir -p .claude/commands
-cp /path/to/this-kit/CLAUDE-COMMANDS/code-review.md .claude/commands/code-review.md
+mkdir -p .claude/skills/code-review
+cp /path/to/this-kit/SKILLS/code-review/SKILL.md .claude/skills/code-review/SKILL.md
 ```
 
-Then from anywhere in Claude Code: `/code-review src/path/to/file.ts`
+Then from anywhere in Claude Code, just ask: `review src/path/to/file.ts`
 
-The slash command uses Claude Code's Read and Grep tools to do real cross-file investigation — verifying dead code via grep, checking cache layer atomicity by reading the cache file, etc. **It catches several patterns the paste-into-chat version persistently misses.**
+The Skill uses Claude Code's Read and Grep tools to do real cross-file investigation — verifying dead code via grep, checking cache layer atomicity by reading the cache file, etc. **It catches several patterns the paste-into-chat version persistently misses.**
 
-For setup details and what's different, see [CLAUDE-COMMANDS/README.md](./CLAUDE-COMMANDS/README.md).
+Prefer explicit invocation? A slash command version (`/code-review src/foo.ts`) is also available — see [`CLAUDE-COMMANDS/`](./CLAUDE-COMMANDS/).
+
+For Skill setup details and the Skill-vs-slash-command tradeoff, see [`SKILLS/README.md`](./SKILLS/README.md).
 
 ## Repository structure
 
@@ -88,8 +90,12 @@ ai-code-review-kit-nodejs/
 ├── LICENSE                             MIT
 ├── PROMPTS/
 │   └── 01-senior-code-review.md        v2.2.1 prompt + how-to-use wrapper (paste into ChatGPT / Claude.ai / Cursor chat)
+├── SKILLS/
+│   ├── README.md                       install instructions for the Skill (recommended Claude Code path)
+│   └── code-review/
+│       └── SKILL.md                    Claude Code Agent Skill — auto-activated, uses Read + Grep tools
 ├── CLAUDE-COMMANDS/
-│   ├── README.md                       install instructions for the slash command
+│   ├── README.md                       install instructions for the slash command (explicit-invoke alternative)
 │   └── code-review.md                  Claude Code slash command — uses Read + Grep tools
 ├── EXAMPLES/
 │   └── 01-real-nestjs-service-review/
